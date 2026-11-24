@@ -1,4 +1,5 @@
 import os
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -62,9 +63,16 @@ print(f"Final loss: {losses[-1]:.6f}")
 # Save the model
 folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "outputs")
 os.makedirs(folder, exist_ok=True)
-np.savez(os.path.join(folder, "xor_model.npz"),
-         w1=w1, b1=b1, w2=w2, b2=b2)
-print(f"Model saved to: {os.path.join(folder, 'xor_model.npz')}")
+model = {
+    "w1": w1.tolist(),
+    "b1": b1.tolist(),
+    "w2": w2.tolist(),
+    "b2": b2.tolist()
+}
+model_path = os.path.join(folder, "xor_model.json")
+with open(model_path, "w") as file:
+    json.dump(model, file, indent=2)
+print(f"Model saved to: {model_path}")
 
 
 # Plot loss and decision boundary
